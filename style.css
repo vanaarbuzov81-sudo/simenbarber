@@ -1,0 +1,542 @@
+/* =========================================================
+   SIMEN SSSS — хайфэшн барбер | style.css
+   Mobile-first. Брейкпоинты: 768px и 480px.
+   ========================================================= */
+
+/* ---------- 1. ПЕРЕМЕННЫЕ И СБРОС ---------- */
+:root {
+  --bg: #0a0a0f;
+  --lime: #c9ff3b;
+  --violet: #8b5cf6;
+  --text: #f2f2f5;
+  --muted: #9a9aab;
+  --line: rgba(255, 255, 255, 0.09);
+
+  --font-head: "Bebas Neue", Impact, sans-serif;
+  --font-body: "Montserrat", system-ui, sans-serif;
+
+  --header-h: 72px;
+  --radius: 22px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Блокируем прокрутку страницы, пока открыто мобильное меню или окно */
+body.menu-open,
+body:has(.modal:target) { overflow: hidden; }
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+button, input, select { font: inherit; color: inherit; }
+
+.container { width: min(1180px, 100% - 40px); margin-inline: auto; }
+.container--narrow { width: min(760px, 100% - 40px); }
+.center { text-align: center; margin-top: 56px; }
+
+/* ---------- 2. ФОНОВЫЕ GLOW-ОРБЫ (blur + float) ---------- */
+.orbs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  will-change: transform;
+  animation: float 14s ease-in-out infinite;
+}
+.orb--lime    { width: 360px; height: 360px; background: var(--lime);   top: 8%;  left: -120px; opacity: 0.22; }
+.orb--violet  { width: 460px; height: 460px; background: var(--violet); top: 40%; right: -160px; animation-duration: 18s; animation-delay: -4s; }
+.orb--lime-2  { width: 280px; height: 280px; background: var(--lime);   bottom: -80px; left: 35%; opacity: 0.14; animation-duration: 22s; animation-delay: -9s; }
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(40px, -60px, 0) scale(1.1); }
+  66%      { transform: translate3d(-30px, 40px, 0) scale(0.95); }
+}
+
+/* Пока открыто окно — тяжёлые анимации на паузе (экономим ресурсы) */
+body:has(.modal:target) .orb,
+body:has(.modal:target) .cube,
+body:has(.modal:target) .scene__shadow { animation-play-state: paused; }
+
+/* ---------- 3. ТИПОГРАФИКА ---------- */
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 18px;
+}
+
+.section__head { margin-bottom: 56px; max-width: 720px; }
+.section__title {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 9vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.section__title span {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--lime);
+}
+.section__lead { margin-top: 22px; color: var(--muted); font-size: 1.05rem; }
+
+/* ---------- 4. КНОПКИ (кислотно-лаймовые + glow на hover) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: var(--lime);
+  color: #0a0a0f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(201, 255, 59, 0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 30px rgba(201, 255, 59, 0.75), 0 0 80px rgba(201, 255, 59, 0.45);
+  background: #d6ff5f;
+  outline: none;
+}
+.btn:active { transform: translateY(0) scale(0.98); }
+
+.btn--small { padding: 10px 22px; font-size: 0.8rem; }
+.btn--big   { padding: 20px 40px; font-size: 1.05rem; }
+.btn--xl    { padding: 26px 56px; font-size: 1.25rem; }
+.btn--block { width: 100%; }
+
+/* ---------- 5. ХЕДЕР + БУРГЕР ---------- */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--header-h);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.header.is-scrolled {
+  background: rgba(10, 10, 15, 0.85);
+  border-color: var(--line);
+}
+.header__inner { display: flex; align-items: center; justify-content: space-between; }
+
+.logo {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.logo span { color: var(--lime); }
+
+/* Мобильное меню: выезжающая панель */
+.nav {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.98);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+  z-index: 90;
+}
+.nav.is-open { transform: translateX(0); }
+
+.nav__link {
+  font-family: var(--font-head);
+  font-size: 2.6rem;
+  letter-spacing: 0.06em;
+  transition: color 0.25s ease;
+}
+.nav__link:hover { color: var(--lime); }
+
+/* Подсветка пункта, окно которого сейчас открыто (через :has, без JS) */
+body:has(#about:target)    .nav__link[href="#about"],
+body:has(#services:target) .nav__link[href="#services"],
+body:has(#reviews:target)  .nav__link[href="#reviews"],
+body:has(#booking:target)  .nav__link[href="#booking"],
+body:has(#contacts:target) .nav__link[href="#contacts"] { color: var(--lime); }
+
+.burger {
+  position: relative;
+  z-index: 110; /* поверх открытого меню */
+  width: 44px; height: 44px;
+  display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  background: none; border: 0; cursor: pointer;
+}
+.burger span {
+  display: block; width: 28px; height: 2px; margin-inline: auto;
+  background: var(--lime);
+  transition: transform 0.35s ease, opacity 0.25s ease;
+}
+.burger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger.is-active span:nth-child(2) { opacity: 0; }
+.burger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ---------- 6. HERO + 3D-КУБ ---------- */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--header-h) + 30px) 0 80px;
+  position: relative;
+}
+.hero__inner { display: grid; gap: 50px; align-items: center; }
+
+.hero__title {
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(5rem, 24vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+}
+.hero__title-accent {
+  display: block;
+  color: var(--lime);
+  text-shadow: 0 0 40px rgba(201, 255, 59, 0.45);
+}
+.hero__sub { max-width: 520px; margin: 26px 0 36px; color: var(--muted); font-size: 1.05rem; }
+
+.hero__stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 46px; }
+.hero__stats li { display: flex; flex-direction: column; }
+.hero__stats strong { font-family: var(--font-head); font-size: 2.6rem; color: var(--violet); line-height: 1; }
+.hero__stats span { font-size: 0.78rem; color: var(--muted); max-width: 130px; }
+
+.hero__visual { display: flex; justify-content: center; }
+
+/* Сцена с перспективой */
+.scene {
+  --size: 200px;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  perspective: 900px;
+  margin: 40px 0 60px;
+}
+
+/* Куб: preserve-3d + бесконечное вращение */
+.cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: spin 18s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotateX(-20deg) rotateY(0deg); }
+  to   { transform: rotateX(340deg) rotateY(360deg); }
+}
+
+.cube__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: calc(var(--size) * 0.3);
+  letter-spacing: 0.06em;
+  color: var(--lime);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.32), rgba(201, 255, 59, 0.1));
+  border: 2px solid var(--lime);
+  box-shadow: inset 0 0 40px rgba(201, 255, 59, 0.25), 0 0 30px rgba(201, 255, 59, 0.25);
+}
+/* Каждая грань выдвигается на половину размера куба */
+.cube__face--front  { transform: rotateY(0deg)   translateZ(calc(var(--size) / 2)); }
+.cube__face--back   { transform: rotateY(180deg) translateZ(calc(var(--size) / 2)); }
+.cube__face--right  { transform: rotateY(90deg)  translateZ(calc(var(--size) / 2)); }
+.cube__face--left   { transform: rotateY(-90deg) translateZ(calc(var(--size) / 2)); }
+.cube__face--top    { transform: rotateX(90deg)  translateZ(calc(var(--size) / 2)); }
+.cube__face--bottom { transform: rotateX(-90deg) translateZ(calc(var(--size) / 2)); }
+
+/* Тень-свечение под кубом */
+.scene__shadow {
+  position: absolute;
+  left: 50%; bottom: -60px;
+  width: 160px; height: 24px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(201, 255, 59, 0.5), transparent 70%);
+  animation: shadowPulse 4s ease-in-out infinite;
+}
+@keyframes shadowPulse {
+  0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 0.5; transform: translateX(-50%) scale(0.75); }
+}
+
+/* Индикатор прокрутки (ведёт в «О мастере») */
+.scroll-hint {
+  position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%);
+  width: 26px; height: 44px; border: 2px solid var(--muted); border-radius: 20px;
+  display: none;
+}
+.scroll-hint span {
+  position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px;
+  background: var(--lime); border-radius: 4px; animation: wheel 1.8s ease-in-out infinite;
+}
+@keyframes wheel { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(16px); } }
+
+/* ---------- 7. АНИМАЦИЯ ПОЯВЛЕНИЯ HERO (Intersection Observer) ---------- */
+/* Скрываем только если JS работает (класс .js ставится в <head>) */
+.js .hero .reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.js .hero .reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- 8. МОДАЛЬНЫЕ ОКНА ---------- */
+/* Скрыты по умолчанию. Открываются, когда адрес страницы = #id окна (:target). */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 96px 0 56px;
+  overflow-y: auto;
+  background: var(--bg); /* сплошной фон: страница под окном не просвечивает */
+}
+.modal:target {
+  display: flex;
+  animation: modalFade 0.35s ease both;
+}
+@keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Свечение в углу окна */
+.modal::before {
+  content: "";
+  position: fixed;
+  top: -140px; right: -140px;
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: var(--violet);
+  filter: blur(110px);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* Каскадное появление содержимого окна (keyframes, не зависит от JS) */
+.modal:target .reveal { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+.modal:target .reveal:nth-child(2) { animation-delay: 0.08s; }
+.modal:target .reveal:nth-child(3) { animation-delay: 0.16s; }
+.modal:target .reveal:nth-child(4) { animation-delay: 0.24s; }
+.modal:target .reveal:nth-child(5) { animation-delay: 0.32s; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(30px); }
+}
+
+/* Кнопка закрытия */
+.modal__close {
+  position: fixed;
+  top: 18px; right: 18px;
+  z-index: 210;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--lime);
+  background: rgba(10, 10, 15, 0.9);
+  color: var(--lime);
+  font-size: 2rem;
+  line-height: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.modal__close:hover,
+.modal__close:focus-visible {
+  background: var(--lime);
+  color: #0a0a0f;
+  transform: rotate(90deg);
+  box-shadow: 0 0 30px rgba(201, 255, 59, 0.7);
+  outline: none;
+}
+
+/* ---------- 9. КАРТОЧКИ + TILT ---------- */
+.cards { display: grid; gap: 20px; grid-template-columns: 1fr; }
+
+.card {
+  position: relative;
+  padding: 34px 28px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* transform управляет JS */
+}
+.card:hover { border-color: rgba(201, 255, 59, 0.5); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.22); }
+
+.card--accent { background: linear-gradient(160deg, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0.05)); border-color: rgba(139, 92, 246, 0.5); }
+
+.card__num {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--lime);
+  margin-bottom: 14px;
+  transform: translateZ(40px); /* «всплывает» при наклоне */
+}
+.card__title { font-family: var(--font-head); font-weight: 400; font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 8px; transform: translateZ(25px); }
+.card__text { color: var(--muted); font-size: 0.96rem; }
+.card__text a { color: var(--lime); border-bottom: 1px solid rgba(201, 255, 59, 0.4); transition: color 0.2s; }
+.card__text a:hover { color: #fff; }
+
+/* Отзывы */
+.review blockquote { font-size: 1rem; margin: 14px 0 20px; }
+.review figcaption { color: var(--lime); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; }
+.stars { color: var(--lime); letter-spacing: 0.2em; font-size: 1.1rem; text-shadow: 0 0 14px rgba(201, 255, 59, 0.6); }
+
+/* ---------- 10. ПРАЙС ---------- */
+.prices { display: grid; gap: 16px; }
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.price:hover { border-color: var(--lime); box-shadow: 0 0 40px rgba(201, 255, 59, 0.15); }
+.price--hot { border-color: var(--violet); background: linear-gradient(120deg, rgba(139, 92, 246, 0.22), rgba(255, 255, 255, 0.02)); }
+.price h3 { font-family: var(--font-head); font-weight: 400; font-size: 2rem; letter-spacing: 0.05em; }
+.price p { color: var(--muted); font-size: 0.92rem; }
+.price__value { font-family: var(--font-head); font-size: 3rem; line-height: 1; color: var(--lime); text-shadow: 0 0 24px rgba(201, 255, 59, 0.4); white-space: nowrap; }
+
+/* ---------- 11. ФОРМА-ТАБЛИЦА ---------- */
+.booking {
+  padding: 28px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+}
+.form-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+
+/* mobile-first: ячейки в столбик */
+.form-table tr, .form-table th, .form-table td { display: block; width: 100%; }
+.form-table tr { padding: 10px 0; }
+.form-table th { text-align: left; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lime); padding-bottom: 8px; }
+
+.form-table input,
+.form-table select {
+  width: 100%;
+  padding: 15px 16px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  color-scheme: dark; /* тёмный календарь/селект */
+}
+.form-table input:focus,
+.form-table select:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(201, 255, 59, 0.18); }
+.form-table input.is-invalid,
+.form-table select.is-invalid { border-color: #ff5d73; }
+
+.form-error { color: #ff5d73; font-size: 0.9rem; margin-bottom: 16px; }
+
+/* ---------- 12. ФУТЕР ---------- */
+.footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--muted); font-size: 0.88rem; }
+.footer__inner { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.footer a:not(.logo):hover { color: var(--lime); }
+
+/* ---------- 13. АДАПТИВ ---------- */
+
+/* ≥ 768px — планшет/десктоп */
+@media (min-width: 768px) {
+  .burger { display: none; }
+
+  /* Меню превращается в горизонтальную навигацию */
+  .nav {
+    position: static; inset: auto;
+    flex-direction: row; gap: 30px;
+    background: none; transform: none;
+    transition: none;
+  }
+  .nav__link { font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .nav__link:hover { color: var(--lime); }
+
+  .hero__inner { grid-template-columns: 1.15fr 0.85fr; }
+  .scene { --size: 260px; }
+  .scroll-hint { display: block; }
+
+  .cards--4 { grid-template-columns: repeat(2, 1fr); }
+  .cards--reviews { grid-template-columns: repeat(2, 1fr); }
+  .cards--contacts { grid-template-columns: repeat(2, 1fr); }
+
+  .prices { grid-template-columns: repeat(2, 1fr); }
+
+  /* Форма — настоящая таблица: подпись слева, поле справа */
+  .booking { padding: 40px; }
+  .form-table tr { display: table-row; }
+  .form-table th, .form-table td { display: table-cell; width: auto; padding: 10px 0; vertical-align: middle; }
+  .form-table th { width: 28%; padding-bottom: 10px; }
+  .form-table tr { border-bottom: 1px solid var(--line); }
+  .form-table tr:last-child { border-bottom: 0; }
+
+  .footer__inner { flex-direction: row; justify-content: space-between; }
+}
+
+/* ≥ 1024px — широкий десктоп */
+@media (min-width: 1024px) {
+  .cards--4 { grid-template-columns: repeat(4, 1fr); }
+  .cards--reviews { grid-template-columns: repeat(4, 1fr); }
+  .cards--contacts { grid-template-columns: repeat(4, 1fr); }
+  .price { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+/* ≤ 480px — маленькие телефоны */
+@media (max-width: 480px) {
+  .modal { padding: 80px 0 40px; }
+  .section__head { margin-bottom: 38px; }
+  .btn--big { padding: 18px 28px; font-size: 0.95rem; width: 100%; }
+  .btn--xl { padding: 20px 24px; font-size: 1.05rem; }
+  .scene { --size: 160px; margin: 30px 0 50px; }
+  .hero__stats { gap: 18px; }
+  .card { padding: 26px 22px; }
+  .price { padding: 22px; }
+  .price__value { font-size: 2.6rem; }
+  .orb { filter: blur(60px); }
+}
+
+/* Уважение к настройкам «меньше анимации» */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cube, .orb, .scene__shadow, .scroll-hint span { animation: none; }
+  .modal:target, .modal:target .reveal { animation: none; }
+  .js .hero .reveal { opacity: 1; transform: none; transition: none; }
+}
