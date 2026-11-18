@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simen Ssss — барбер | Хайфэшн-стрижки</title>
+  <meta name="description" content="Simen Ssss — барбер с 5-летним опытом. Мужские короткие и длинные стрижки, индивидуальный образ под форму лица. Запись в Telegram." />
+  <meta name="theme-color" content="#0a0a0f" />
+
+  <!-- Google Fonts: Bebas Neue (заголовки) + Montserrat (текст) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Метка «JS включён»: анимации появления включаются только если скрипт работает -->
+  <script>document.documentElement.classList.add("js");</script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== ФОНОВЫЕ GLOW-ШАРЫ (плавающие, blur) ===== -->
+  <div class="orbs" aria-hidden="true">
+    <span class="orb orb--lime"></span>
+    <span class="orb orb--violet"></span>
+    <span class="orb orb--lime-2"></span>
+  </div>
+
+  <!-- ===== 1. ХЕДЕР ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#hero" class="logo">SIMEN <span>SSSS</span></a>
+
+      <!--
+        Пункты меню — обычные ссылки на #якоря.
+        Окно открывается через CSS-псевдокласс :target, поэтому работает
+        даже если скрипт не загрузился.
+      -->
+      <nav class="nav" id="nav" aria-label="Главное меню">
+        <a href="#about" class="nav__link">О мастере</a>
+        <a href="#services" class="nav__link">Услуги</a>
+        <a href="#reviews" class="nav__link">Отзывы</a>
+        <a href="#booking" class="nav__link">Запись</a>
+        <a href="#contacts" class="nav__link">Контакты</a>
+        <a href="https://t.me/simen_Ssss" class="btn btn--small nav__cta" target="_blank" rel="noopener noreferrer">Записаться</a>
+      </nav>
+
+      <!-- Бургер-кнопка (мобильное меню) -->
+      <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== 2. HERO ===== -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+
+        <div class="hero__text reveal">
+          <p class="eyebrow">Барбер · 5 лет опыта · Хайфэшн</p>
+          <h1 class="hero__title">
+            SIMEN
+            <span class="hero__title-accent">SSSS</span>
+          </h1>
+          <p class="hero__sub">
+            Короткие и длинные мужские стрижки. Образ, который строится
+            под форму твоего лица — а не под тренд из ленты.
+          </p>
+
+          <!-- КНОПКА ЗАПИСИ №1 (hero) -->
+          <a href="https://t.me/simen_Ssss" class="btn btn--big" target="_blank" rel="noopener noreferrer">
+            Записаться в Telegram
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M9.78 15.2 9.5 19.3c.4 0 .57-.17.78-.38l1.87-1.8 3.88 2.84c.71.4 1.22.19 1.41-.65l2.55-11.97c.23-1.05-.38-1.46-1.07-1.2L3.93 12.9c-1.02.4-1 .97-.17 1.23l3.83 1.2 8.9-5.6c.42-.27.8-.12.49.15z"/></svg>
+          </a>
+
+          <ul class="hero__stats">
+            <li><strong>5</strong><span>лет у кресла</span></li>
+            <li><strong>2</strong><span>формата: short / long</span></li>
+            <li><strong>1</strong><span>образ под твоё лицо</span></li>
+          </ul>
+        </div>
+
+        <!-- 3D-КУБ: вращается через CSS (preserve-3d) -->
+        <div class="hero__visual reveal" aria-hidden="true">
+          <div class="scene">
+            <div class="cube">
+              <div class="cube__face cube__face--front">SHORT</div>
+              <div class="cube__face cube__face--back">LONG</div>
+              <div class="cube__face cube__face--right">FADE</div>
+              <div class="cube__face cube__face--left">BEARD</div>
+              <div class="cube__face cube__face--top">STYLE</div>
+              <div class="cube__face cube__face--bottom">SSSS</div>
+            </div>
+            <div class="scene__shadow"></div>
+          </div>
+        </div>
+
+      </div>
+      <a href="#about" class="scroll-hint" aria-label="О мастере"><span></span></a>
+    </section>
+
+    <!-- =====================================================
+         ОКНА (модалки). Открываются по клику на пункт меню.
+         Закрытие: крестик (ссылка на #hero), Esc или клик по фону.
+         ===================================================== -->
+
+    <!-- ===== 3. О МАСТЕРЕ ===== -->
+    <section class="modal" id="about" role="dialog" aria-modal="true" aria-label="О мастере">
+      <a class="modal__close" href="#hero" aria-label="Закрыть">&times;</a>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">01 / О мастере</p>
+          <h2 class="section__title">Не стрижка — <span>образ</span></h2>
+          <p class="section__lead">
+            Я смотрю на форму лица, структуру волос и твой стиль жизни. Из этого
+            собирается стрижка, которая выглядит дорого и держится неделями.
+          </p>
+        </header>
+
+        <div class="cards cards--4">
+          <article class="card reveal" data-tilt>
+            <span class="card__num">5</span>
+            <h3 class="card__title">Лет опыта</h3>
+            <p class="card__text">Пять лет в барбершопе — от классики до сложных переходов и авторских форм.</p>
+          </article>
+
+          <article class="card reveal" data-tilt>
+            <span class="card__num">✂</span>
+            <h3 class="card__title">Короткие стрижки</h3>
+            <p class="card__text">Чёткие линии, фейд, кроп, классический андеркат. Чисто, жёстко, актуально.</p>
+          </article>
+
+          <article class="card reveal" data-tilt>
+            <span class="card__num">≈</span>
+            <h3 class="card__title">Длинные стрижки</h3>
+            <p class="card__text">Работа с объёмом и движением. Форма, которая красиво лежит и не требует часа укладки.</p>
+          </article>
+
+          <article class="card card--accent reveal" data-tilt>
+            <span class="card__num">◆</span>
+            <h3 class="card__title">Хайфэшн</h3>
+            <p class="card__text">Индивидуальный образ под форму лица: подбираем пропорции, акценты и стиль.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. УСЛУГИ И ЦЕНЫ ===== -->
+    <section class="modal" id="services" role="dialog" aria-modal="true" aria-label="Услуги и цены">
+      <a class="modal__close" href="#hero" aria-label="Закрыть">&times;</a>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">02 / Услуги и цены</p>
+          <h2 class="section__title">Прайс <span>без сюрпризов</span></h2>
+        </header>
+
+        <div class="prices">
+          <div class="price reveal" data-tilt>
+            <div class="price__info">
+              <h3>Короткая стрижка</h3>
+              <p>Фейд, кроп, классика. Мытьё и укладка.</p>
+            </div>
+            <div class="price__value">2000 ₽</div>
+          </div>
+
+          <div class="price reveal" data-tilt>
+            <div class="price__info">
+              <h3>Длинная стрижка</h3>
+              <p>Форма под лицо, работа с объёмом.</p>
+            </div>
+            <div class="price__value">2800 ₽</div>
+          </div>
+
+          <div class="price price--hot reveal" data-tilt>
+            <div class="price__info">
+              <h3>Стрижка + борода</h3>
+              <p>Полный образ: волосы и борода в одной форме.</p>
+            </div>
+            <div class="price__value">3500 ₽</div>
+          </div>
+
+          <div class="price reveal" data-tilt>
+            <div class="price__info">
+              <h3>Камуфляж седины</h3>
+              <p>Аккуратное тонирование, естественный результат.</p>
+            </div>
+            <div class="price__value">1500 ₽</div>
+          </div>
+        </div>
+
+        <!-- КНОПКА ЗАПИСИ №2 (после услуг) -->
+        <div class="center reveal">
+          <a href="https://t.me/simen_Ssss" class="btn btn--big" target="_blank" rel="noopener noreferrer">Записаться онлайн</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. ОТЗЫВЫ ===== -->
+    <section class="modal" id="reviews" role="dialog" aria-modal="true" aria-label="Отзывы">
+      <a class="modal__close" href="#hero" aria-label="Закрыть">&times;</a>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">03 / Отзывы</p>
+          <h2 class="section__title">Говорят <span>клиенты</span></h2>
+        </header>
+
+        <div class="cards cards--reviews">
+          <figure class="card review reveal" data-tilt>
+            <div class="stars" aria-label="5 из 5">★★★★★</div>
+            <blockquote>«Наконец-то мастер, который объяснил, почему мне подходит именно эта форма. Стрижка держится три недели».</blockquote>
+            <figcaption>— Артём, короткая стрижка</figcaption>
+          </figure>
+
+          <figure class="card review reveal" data-tilt>
+            <div class="stars" aria-label="5 из 5">★★★★★</div>
+            <blockquote>«Отращивал волосы год, боялся доверять. Simen собрал форму так, что укладка занимает пять минут».</blockquote>
+            <figcaption>— Никита, длинная стрижка</figcaption>
+          </figure>
+
+          <figure class="card review reveal" data-tilt>
+            <div class="stars" aria-label="5 из 5">★★★★★</div>
+            <blockquote>«Стрижка + борода — идеально вписано в мои скулы. Видно, что человек думает, а не просто берёт машинку».</blockquote>
+            <figcaption>— Михаил, стрижка + борода</figcaption>
+          </figure>
+
+          <figure class="card review reveal" data-tilt>
+            <div class="stars" aria-label="5 из 5">★★★★★</div>
+            <blockquote>«Закрасили седину так, что никто не заметил. Выгляжу моложе, и всё естественно».</blockquote>
+            <figcaption>— Андрей, камуфляж седины</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6. ОНЛАЙН-ЗАПИСЬ (таблица-форма) ===== -->
+    <section class="modal" id="booking" role="dialog" aria-modal="true" aria-label="Онлайн-запись">
+      <a class="modal__close" href="#hero" aria-label="Закрыть">&times;</a>
+      <div class="container container--narrow">
+        <header class="section__head reveal">
+          <p class="eyebrow">04 / Онлайн-запись</p>
+          <h2 class="section__title">Оставь <span>заявку</span></h2>
+          <p class="section__lead">Заполни форму — и мы сразу продолжим в Telegram.</p>
+        </header>
+
+        <form class="booking reveal" id="bookingForm" novalidate>
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th scope="row"><label for="name">Имя</label></th>
+                <td><input type="text" id="name" name="name" placeholder="Как к тебе обращаться" autocomplete="name" required /></td>
+              </tr>
+              <tr>
+                <th scope="row"><label for="phone">Телефон</label></th>
+                <td><input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required /></td>
+              </tr>
+              <tr>
+                <th scope="row"><label for="service">Услуга</label></th>
+                <td>
+                  <select id="service" name="service" required>
+                    <option value="" disabled selected>Выбери услугу</option>
+                    <option>Короткая стрижка — 2000 ₽</option>
+                    <option>Длинная стрижка — 2800 ₽</option>
+                    <option>Стрижка + борода — 3500 ₽</option>
+                    <option>Камуфляж седины — 1500 ₽</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"><label for="date">Дата</label></th>
+                <td><input type="date" id="date" name="date" required /></td>
+              </tr>
+              <tr>
+                <th scope="row"><label for="time">Время</label></th>
+                <td>
+                  <select id="time" name="time" required>
+                    <option value="" disabled selected>Выбери время</option>
+                    <option>10:00</option><option>11:00</option><option>12:00</option>
+                    <option>13:00</option><option>14:00</option><option>15:00</option>
+                    <option>16:00</option><option>17:00</option><option>18:00</option>
+                    <option>19:00</option><option>20:00</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p class="form-error" id="formError" role="alert" hidden></p>
+
+          <button type="submit" class="btn btn--big btn--block">Отправить заявку</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== 7. КОНТАКТЫ ===== -->
+    <section class="modal" id="contacts" role="dialog" aria-modal="true" aria-label="Контакты">
+      <a class="modal__close" href="#hero" aria-label="Закрыть">&times;</a>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">05 / Контакты</p>
+          <h2 class="section__title">Найти <span>меня</span></h2>
+        </header>
+
+        <div class="cards cards--contacts">
+          <div class="card reveal" data-tilt>
+            <h3 class="card__title">Адрес</h3>
+            <!-- TODO: замени на реальный адрес -->
+            <p class="card__text">г. Ваш город, ул. Примерная, 1</p>
+          </div>
+          <div class="card reveal" data-tilt>
+            <h3 class="card__title">Телефон</h3>
+            <!-- TODO: замени на реальный номер -->
+            <p class="card__text"><a href="tel:+79000000000">+7 (900) 000-00-00</a></p>
+          </div>
+          <div class="card reveal" data-tilt>
+            <h3 class="card__title">Часы работы</h3>
+            <p class="card__text">Ежедневно<br />10:00 — 21:00</p>
+          </div>
+          <div class="card reveal" data-tilt>
+            <h3 class="card__title">Соцсети</h3>
+            <p class="card__text">
+              <a href="https://t.me/simen_Ssss" target="_blank" rel="noopener noreferrer">Telegram @simen_Ssss</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- КНОПКА ЗАПИСИ №3 (контакты) -->
+        <div class="center reveal">
+          <a href="https://t.me/simen_Ssss" class="btn btn--big btn--xl" target="_blank" rel="noopener noreferrer">
+            Записаться в Telegram
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M9.78 15.2 9.5 19.3c.4 0 .57-.17.78-.38l1.87-1.8 3.88 2.84c.71.4 1.22.19 1.41-.65l2.55-11.97c.23-1.05-.38-1.46-1.07-1.2L3.93 12.9c-1.02.4-1 .97-.17 1.23l3.83 1.2 8.9-5.6c.42-.27.8-.12.49.15z"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 8. ФУТЕР ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#hero" class="logo">SIMEN <span>SSSS</span></a>
+      <p>© <span id="year">2026</span> Simen Ssss. Все права защищены.</p>
+      <a href="https://t.me/simen_Ssss" target="_blank" rel="noopener noreferrer">@simen_Ssss</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
